@@ -35,11 +35,12 @@ jobs:
           fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Build and push Docker images
+      - name: Build and push Docker images (multi-arch)
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/my-aria2:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/my-aria2:${{ steps.vars.outputs.version }}

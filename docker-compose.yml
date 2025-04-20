@@ -1,0 +1,13 @@
+version: "3"
+services:
+  aria2:
+    image: my-aria2 # use your custom image, or use 'p3terx/aria2-pro' for a popular public one
+    container_name: aria2
+    restart: unless-stopped
+    ports:
+      - "6800:6800"
+    volumes:
+      - ./config:/config
+      - ./downloads:/downloads
+    environment:
+      - TZ=UTC

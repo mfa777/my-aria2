@@ -1,0 +1,17 @@
+## Connect via RPC
+
+When using an RPC client (like **AriaNg**), connect to:
+
+- `http://<your_host_ip>:6800/jsonrpc`
+- Use your `rpc-secret` as the token.
+
+## Summary Table
+
+| Requirement                              | Solution                                         |
+| ---------------------------------------- | ------------------------------------------------ |
+| RPC with secret                          | `rpc-secret=YOUR_SECRET_HERE` in `aria2.conf`    |
+| Continue downloads                       | `continue=true` and session file in `aria2.conf` |
+| Docker Compose, not CLI                  | Use `docker-compose.yml` as above                |
+| Edit config from host                    | Mount `./config:/config`                         |
+| Download path set in config, not Compose | `dir=/downloads` in `aria2.conf`                 |
+| Session and config persistent            | Both mapped to host `~/aria2/config`             |

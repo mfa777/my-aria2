@@ -1,17 +1,91 @@
-## Connect via RPC
+* Overview
+
+This project provides a simple, configurable Docker image for [[https://aria2.github.io/][aria2]], supporting persistent
+config and session storage, and automatic publish to Docker Hub with =latest= and version tags.
+
+* Features
+
+- Easily configurable via host-mounted config file
+- Download session persistence
+- RPC support with secret
+- Automatic Docker Hub publishing via GitHub Actions
+- Both =latest= and versioned tags
+
+* Getting Started
+
+** 1. Clone This Repository**
+
+#+begin_src shell
+git clone https://github.com/mfa777/my-aria2.git
+cd my-aria2
+#+end_src
+
+** 2. Set Up Configuration**
+
+- Edit =config/aria2.conf= and change the rpc-secret password.
+- Edit =docker-compose.yml= to set the download path on host.
+
+** 3. Run Docker Compose**
+
+#+begin_src shell
+  sudo docker compose up -d
+#+end_src
+
+** 4. Connect via RPC
 
 When using an RPC client (like **AriaNg**), connect to:
 
-- `http://<your_host_ip>:6800/jsonrpc`
+- ~http://<your_host_ip>:6800/jsonrpc~
 - Use your `rpc-secret` as the token.
 
-## Summary Table
+** Note
 
-| Requirement                              | Solution                                         |
-| ---------------------------------------- | ------------------------------------------------ |
-| RPC with secret                          | `rpc-secret=YOUR_SECRET_HERE` in `aria2.conf`    |
-| Continue downloads                       | `continue=true` and session file in `aria2.conf` |
-| Docker Compose, not CLI                  | Use `docker-compose.yml` as above                |
-| Edit config from host                    | Mount `./config:/config`                         |
-| Download path set in config, not Compose | `dir=/downloads` in `aria2.conf`                 |
-| Session and config persistent            | Both mapped to host `~/aria2/config`             |
+*** Support HTTP/HTTPS only
+
+Do not support BitTorrent, I personally have no demand on it. I pefer use cloud service to convert torrent/magnetlink to HTTP(s) link then download with aria2.
+
+* For Developer Only
+
+** Publishing to Docker Hub Automatically
+
+This project uses GitHub Actions to build and push Docker images to Docker Hub on every commit and tag.
+
+*** Setup Steps:
+
+1. Create a Docker Hub [[https://hub.docker.com/settings/security][access token]].
+2. In your GitHub repository, go to =Settings > Secrets and variables > Actions=.
+3. Add secrets:
+   - =DOCKERHUB_USERNAME=: your Docker Hub username
+   - =DOCKERHUB_TOKEN=: your access token
+
+*** Tagging for Docker Hub Publish
+
+- On every commit to =main=, GitHub Actions pushes:
+  - =youruser/aria2:latest=
+  - =youruser/aria2:<short-sha>=
+
+- On every git tag (e.g. =v1.2.3=), it also pushes:
+  - =youruser/aria2:v1.2.3=
+
+*** To Release a Version:
+
+#+begin_src shell
+git tag v1.0.0
+git push origin v1.0.0
+#+end_src
+
+** Example: Pulling from Docker Hub
+
+#+begin_src shell
+docker pull youruser/aria2:latest
+docker pull youruser/aria2:v1.0.0
+#+end_src
+
+
+* License
+
+MIT
+
+* Credits
+
+Inspired by [[https://aria2.github.io/][aria2]] and Docker best practices.

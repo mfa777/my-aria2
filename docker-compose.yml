@@ -1,7 +1,6 @@
-version: "3"
 services:
   aria2:
-    image: my-aria2 # use your custom image, or use 'p3terx/aria2-pro' for a popular public one
+    image: mfa777/my-aria2:latest
     container_name: aria2
     restart: unless-stopped
     ports:
@@ -11,3 +10,6 @@ services:
       - ./downloads:/downloads
     environment:
       - TZ=UTC
+    logging:
+      options:
+        max-size: 1m

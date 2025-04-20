@@ -1,0 +1,45 @@
+name: Build and Push Docker image
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - 'v*' # triggers on tags that start with 'v', like v1.2.3
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract version
+        id: vars
+        run: |
+          # Default to short SHA
+          VERSION=${GITHUB_SHA::7}
+          # If this is a tag build, use the tag as the version
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/my-aria2:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/my-aria2:${{ steps.vars.outputs.version }}

@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - 'README.org'
     tags:
       - 'v*' # triggers on tags that start with 'v', like v1.2.3
 

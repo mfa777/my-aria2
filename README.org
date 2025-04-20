@@ -13,19 +13,19 @@ config and session storage, and automatic publish to Docker Hub with =latest= an
 
 * Getting Started
 
-** 1. Clone This Repository**
+** 1. Clone This Repository
 
 #+begin_src shell
 git clone https://github.com/mfa777/my-aria2.git
 cd my-aria2
 #+end_src
 
-** 2. Set Up Configuration**
+** 2. Set Up Configuration
 
 - Edit =config/aria2.conf= and change the rpc-secret password.
 - Edit =docker-compose.yml= to set the download path on host.
 
-** 3. Run Docker Compose**
+** 3. Run Docker Compose
 
 #+begin_src shell
   sudo docker compose up -d
@@ -33,16 +33,10 @@ cd my-aria2
 
 ** 4. Connect via RPC
 
-When using an RPC client (like **AriaNg**), connect to:
+When using an RPC client (like /AriaNg/), connect to:
 
 - ~http://<your_host_ip>:6800/jsonrpc~
-- Use your `rpc-secret` as the token.
-
-** Note
-
-*** Support HTTP/HTTPS only
-
-Do not support BitTorrent, I personally have no demand on it. I pefer use cloud service to convert torrent/magnetlink to HTTP(s) link then download with aria2.
+- Use your =rpc-secret= as the token.
 
 * For Developer Only
 
